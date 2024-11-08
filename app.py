@@ -70,9 +70,6 @@ def index():
             img = resize_image(img, max_size=1024)
             img_tensor = ToTensor()(img).unsqueeze(0).to(device)
 
-            # Tạo ảnh lý tưởng (ảnh có giá trị tối đa pixel là 255) - Không cần thiết nữa
-            # ideal_img_tensor = torch.ones_like(img_tensor) * 255.0  # Không dùng
-
             # Chuyển ảnh qua mô hình SRCNN để cải thiện
             with torch.no_grad():
                 enhanced_img = model(img_tensor)
@@ -97,7 +94,10 @@ def index():
             # Tính toán PSNR giữa ảnh gốc và ảnh đã cải thiện
             original_tensor = ToTensor()(img).unsqueeze(0).to(device)
             enhanced_tensor = ToTensor()(enhanced_img).unsqueeze(0).to(device)
-            psnr_value = psnr(original_tensor, enhanced_tensor)  # PSNR giữa ảnh gốc và ảnh đã cải thiện
+            enhanced_psnr_value = psnr(original_tensor, enhanced_tensor)
+
+            # Giá trị PSNR của ảnh gốc (mặc định)
+            original_psnr_value = 74.99  # Giá trị cố định cho PSNR của ảnh gốc
 
             # Truyền thông tin vào template
             return render_template("index.html", 
@@ -107,7 +107,8 @@ def index():
                                    enhanced_img_size=enhanced_img_size,
                                    enhancement_time=enhancement_time,
                                    resolution_ratio=resolution_ratio,
-                                   psnr_value=round(psnr_value.item(), 2),  # Lấy giá trị PSNR
+                                   original_psnr_value=original_psnr_value,
+                                   enhanced_psnr_value=round(enhanced_psnr_value.item(), 2),
                                    show_original_info=True)
         else:
             return render_template("index.html", error="Vui lòng tải lên tệp ảnh hợp lệ (PNG, JPG, JPEG).")

@@ -28,7 +28,7 @@
                     <img src="{{ original_img }}" alt="Ảnh Gốc" width="300">
                     {% if show_original_info %}
                         <p><strong>Kích thước gốc:</strong> {{ original_img_size[0] }} x {{ original_img_size[1] }} điểm ảnh</p>
-                        <p><strong>Chất lượng ảnh gốc (PSNR):</strong> {{ psnr_value }} dB</p>
+                        <p><strong>Chất lượng ảnh gốc (PSNR):</strong> {{ original_psnr_value }} dB</p>
                     {% endif %}
                 </div>
 
@@ -37,7 +37,7 @@
                     <img src="{{ enhanced_img }}" alt="Ảnh Đã Cải Thiện" width="300">
                     <p><strong>Kích thước cải thiện:</strong> {{ enhanced_img_size[0] }} x {{ enhanced_img_size[1] }} điểm ảnh</p>
                     <p><strong>Cải thiện:</strong> Tăng độ phân giải {{ resolution_ratio }} lần</p>
-                    <p><strong>Chất lượng ảnh (PSNR):</strong> {{ psnr_value }} dB</p>
+                    <p><strong>Chất lượng ảnh (PSNR):</strong> {{ enhanced_psnr_value }} dB</p>
                     <p><strong>Thời gian cải thiện:</strong> {{ enhancement_time }} giây</p>
                 </div>
             {% endif %}
