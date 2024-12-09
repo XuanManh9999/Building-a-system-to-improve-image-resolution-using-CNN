@@ -19,27 +19,22 @@ class SRCNN(nn.Module):
         return x
 
 def load_model(model_path):
-    print("VAO LOAND load_model 1")
     model = SRCNN()
     model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     model.eval()
-    print("VAO LOAND load_model 2")
     return model
 
 def enhance_image(image_path, model):
     # Mở ảnh và chuyển thành ảnh xám (grayscale)
     img = Image.open(image_path).convert('L')  # 'L' chuyển ảnh thành grayscale (1 kênh)
-    print("VAO enhance_image 1")
 
     # Thực hiện phóng đại ảnh (resize) với phương pháp BICUBIC
     img = img.resize((img.width * 2, img.height * 2), Image.BICUBIC)
     print(f"Image resized to: {img.size}")
-    print("VAO enhance_image 2")
 
     # Chuyển ảnh xám thành tensor và thêm chiều batch
     img = ToTensor()(img).unsqueeze(0)
     print(f"Image tensor shape before model: {img.shape}")
-    print("VAO enhance_image 3")
 
     with torch.no_grad():
         try:
@@ -52,6 +47,5 @@ def enhance_image(image_path, model):
     # Loại bỏ chiều batch và chuyển lại ảnh tensor thành ảnh PIL
     enhanced_img = enhanced_img.squeeze(0)
     enhanced_img = ToPILImage()(enhanced_img)
-    print("VAO enhance_image 5")
     return enhanced_img
 
